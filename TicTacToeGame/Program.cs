@@ -11,6 +11,7 @@ namespace TicTacToeGame
             ticTacToe.CreateGameBoard();
             ticTacToe.ChooseInput();
             ticTacToe.ShowBoard();
+            ticTacToe.ChoosePositionOnBoard();
             
         }
     }
