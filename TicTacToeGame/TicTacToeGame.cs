@@ -19,5 +19,23 @@ namespace TicTacToeGame
             Console.WriteLine("_________");
             Console.WriteLine(board[6] + " | " + board[7] + " | " + board[8]);
         }
+
+        public void SelectInput()
+        {
+            char playerInput = ' ';
+            Console.Write("Choose your input 'X' or 'O' : ");
+            while (playerInput != 'X' && playerInput != 'O')
+            {
+                playerInput = Convert.ToChar(Console.ReadLine().ToUpper());
+                if (playerInput != 'X' && playerInput != 'O')
+                    Console.Write("Please enter input 'X' or 'O' : ");
+
+            }
+            char compInput;
+            if (playerInput == 'X')
+                compInput = 'O';
+            else
+                compInput = 'X';
+        }
     }
 }
