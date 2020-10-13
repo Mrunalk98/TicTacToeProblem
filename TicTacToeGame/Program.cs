@@ -17,7 +17,8 @@ namespace TicTacToeGame
                 Console.WriteLine("Computer Move : " + ticTacToe.ComputerMove());
             else
                 ticTacToe.ChoosePositionOnBoard();
-            
+            ticTacToe.ShowBoard();
+
         }
     }
 }

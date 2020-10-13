@@ -11,6 +11,7 @@ namespace TicTacToeGame
         char compInput = ' ';
         public const int HEAD = 0;
         public const int TAIL= 1;
+        public int[] corners = { 1, 3, 7, 9 };
 
         public void CreateGameBoard()
         {
@@ -81,7 +82,6 @@ namespace TicTacToeGame
                 }
             }
             allotPosition(board, userPositon, userInput);
-            ShowBoard();
             CheckIfPlayerHasWon(board, userInput);
         }
 
@@ -113,10 +113,13 @@ namespace TicTacToeGame
         {
             int compWinningMove = WinningMove(compInput);
             int userWinningMove = WinningMove(userInput);
+            int cornersMove = RandomMove(corners, compInput);
             if (compWinningMove != 0)
                 return compWinningMove;
             else if (userWinningMove != 0)
                 return userWinningMove;
+            else if (cornersMove != 0)
+                return cornersMove;
             return 0;
         }
 
@@ -133,6 +136,20 @@ namespace TicTacToeGame
                 }
             }
             return 0;
+        }
+
+        public int RandomMove(int[] positions, char input)
+        {
+            for (int i = 0; i < positions.Length; i++)
+            {
+                if(IfPositionFree(board, positions[i]))
+                {
+                    allotPosition(board, positions[i], input);
+                    return positions[i];
+                }
+            }
+            return 0;
+
         }
 
     }
