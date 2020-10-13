@@ -9,6 +9,9 @@ namespace TicTacToeGame
         public char[] board = new char[10];
         char playerInput = ' ';
         char compInput = ' ';
+        public const int HEAD = 0;
+        public const int TAIL= 1;
+
         public void CreateGameBoard()
         {
             for (int i = 0; i < board.Length; i++)
@@ -59,6 +62,19 @@ namespace TicTacToeGame
             }
             board[userPositon] = playerInput;
             ShowBoard();
+        }
+
+        public string CheckWhoPlaysFirst()
+        {
+            Random random = new Random();
+            int choice = random.Next(0, 2);
+
+            if (choice == HEAD)
+                return "User";
+            else
+                return "Computer";
+
+
         }
 
     }

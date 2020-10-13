@@ -9,8 +9,10 @@ namespace TicTacToeGame
         {
             Console.WriteLine("Welcome to TicTacToe Game !");
             ticTacToe.CreateGameBoard();
-            ticTacToe.ChooseInput();
             ticTacToe.ShowBoard();
+            ticTacToe.ChooseInput();
+            string firstMoveBy = ticTacToe.CheckWhoPlaysFirst();
+            Console.WriteLine(firstMoveBy + " will play first");
             ticTacToe.ChoosePositionOnBoard();
             
         }
