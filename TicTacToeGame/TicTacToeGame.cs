@@ -12,12 +12,16 @@ namespace TicTacToeGame
         public const int HEAD = 0;
         public const int TAIL= 1;
         public int[] corners = { 1, 3, 7, 9 };
+        public int[] sides = { 2, 4, 6, 8 };
 
         public void CreateGameBoard()
         {
             for (int i = 0; i < board.Length; i++)
                 board[i] = ' ';
-
+            board[1] = 'O';
+            board[3] = 'O';
+            board[7] = 'O';
+            board[9] = 'O';
         }
 
         public void ShowBoard()
@@ -50,6 +54,7 @@ namespace TicTacToeGame
                 compInput = 'O';
             else
                 compInput = 'X';
+            Console.WriteLine("User : " + userInput + " Comp : " + compInput);
         }
 
         private bool IfPositionFree(char[] b, int position)
@@ -112,14 +117,26 @@ namespace TicTacToeGame
         public int ComputerMove()
         {
             int compWinningMove = WinningMove(compInput);
-            int userWinningMove = WinningMove(userInput);
-            int cornersMove = RandomMove(corners, compInput);
             if (compWinningMove != 0)
+            {
+                allotPosition(board, compWinningMove, compInput);
                 return compWinningMove;
-            else if (userWinningMove != 0)
+            }
+            int userWinningMove = WinningMove(userInput);
+            if (userWinningMove != 0)
+            {
+                allotPosition(board, userWinningMove, compInput);
                 return userWinningMove;
-            else if (cornersMove != 0)
+            }
+            int cornersMove = RandomMove(corners, compInput);
+            if (cornersMove != 0)
                 return cornersMove;
+            int centreMove = CentreMove(compInput);
+            if (centreMove != 0)
+                return centreMove;
+            int sidesMove = RandomMove(sides, compInput);
+            if (sidesMove != 0)
+                return sidesMove;
             return 0;
         }
 
@@ -149,7 +166,16 @@ namespace TicTacToeGame
                 }
             }
             return 0;
+        }
 
+        public int CentreMove(char input)
+        {
+            if (IfPositionFree(board, 5))
+            {
+                allotPosition(board, 5, input);
+                return 5;
+            }
+            return 0;
         }
 
     }
