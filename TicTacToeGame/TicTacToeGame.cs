@@ -15,9 +15,7 @@ namespace TicTacToeGame
         public void CreateGameBoard()
         {
             for (int i = 0; i < board.Length; i++)
-            {
                 board[i] = ' ';
-            }
 
         }
 
@@ -113,9 +111,12 @@ namespace TicTacToeGame
 
         public int ComputerMove()
         {
-            int winningMove = WinningMove(compInput);
-            if (winningMove != 0)
-                return winningMove;
+            int compWinningMove = WinningMove(compInput);
+            int userWinningMove = WinningMove(userInput);
+            if (compWinningMove != 0)
+                return compWinningMove;
+            else if (userWinningMove != 0)
+                return userWinningMove;
             return 0;
         }
 
