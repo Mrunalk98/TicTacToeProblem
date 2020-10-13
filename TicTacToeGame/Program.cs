@@ -13,7 +13,10 @@ namespace TicTacToeGame
             ticTacToe.ChooseInput();
             string firstMoveBy = ticTacToe.CheckWhoPlaysFirst();
             Console.WriteLine(firstMoveBy + " will play first");
-            ticTacToe.ChoosePositionOnBoard();
+            if (firstMoveBy == "Computer")
+                Console.WriteLine("Computer Move : " + ticTacToe.ComputerMove());
+            else
+                ticTacToe.ChoosePositionOnBoard();
             
         }
     }

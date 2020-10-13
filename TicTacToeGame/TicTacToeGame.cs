@@ -18,7 +18,7 @@ namespace TicTacToeGame
             {
                 board[i] = ' ';
             }
-            
+
         }
 
         public void ShowBoard()
@@ -29,6 +29,13 @@ namespace TicTacToeGame
             Console.WriteLine("-----------");
             Console.WriteLine(" " + board[7] + " | " + board[8] + " | " + board[9]);
         }
+
+        public char[] getBoardCopy()
+        {
+            char[] boardCopy = new char[10];
+            Array.Copy(board, boardCopy, board.Length);
+            return boardCopy;
+        } 
 
         public void ChooseInput()
         {
@@ -46,6 +53,21 @@ namespace TicTacToeGame
                 compInput = 'X';
         }
 
+        private bool IfPositionFree(char[] b, int position)
+        {
+            if (b[position] == ' ')
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private void allotPosition(char[] b, int position, char playerInput)
+        {
+            b[position] = playerInput;
+        }
+
         public void ChoosePositionOnBoard()
         {
             int userPositon = 0;
@@ -55,14 +77,14 @@ namespace TicTacToeGame
                 userPositon = Convert.ToInt32(Console.ReadLine());
                 if (userPositon < 1 || userPositon > 10)
                     Console.Write("Please enter a position from 1 to 9: ");
-                else if (board[userPositon] != ' ')
+                else if (!IfPositionFree(board, userPositon))
                 {
                     Console.Write("Position " + userPositon + " is already occupied. Enter some other position : ");
-                }                    
+                }
             }
-            board[userPositon] = userInput;
+            allotPosition(board, userPositon, userInput);
             ShowBoard();
-            CheckIfPlayerHasWon(userInput);
+            CheckIfPlayerHasWon(board, userInput);
         }
 
         public string CheckWhoPlaysFirst()
@@ -76,17 +98,40 @@ namespace TicTacToeGame
                 return "Computer";
         }
 
-        public bool CheckIfPlayerHasWon(char input)
+        public bool CheckIfPlayerHasWon(char [] b,  char input)
         {
-            bool topRow = (board[1] == input && board[2] == input && board[3] == input);
-            bool middleRow = (board[4] == input && board[5] == input && board[6] == input);
-            bool bottomRow = (board[7] == input && board[8] == input && board[9] == input);
-            bool leftCol = (board[1] == input && board[4] == input && board[7] == input);
-            bool middleCol = (board[2] == input && board[5] == input && board[8] == input);
-            bool rightCol = (board[3] == input && board[6] == input && board[9] == input);
-            bool firstDiagonal = (board[1] == input && board[5] == input && board[9] == input);
-            bool secondDiagonal = (board[3] == input && board[5] == input && board[7] == input);
+            bool topRow = (b[1] == input && b[2] == input && b[3] == input);
+            bool middleRow = (b[4] == input && b[5] == input && b[6] == input);
+            bool bottomRow = (b[7] == input && b[8] == input && b[9] == input);
+            bool leftCol = (b[1] == input && b[4] == input && b[7] == input);
+            bool middleCol = (b[2] == input && b[5] == input && b[8] == input);
+            bool rightCol = (b[3] == input && b[6] == input && b[9] == input);
+            bool firstDiagonal = (b[1] == input && b[5] == input && b[9] == input);
+            bool secondDiagonal = (b[3] == input && b[5] == input && b[7] == input);
             return topRow || middleRow || bottomRow || leftCol || rightCol || middleCol || firstDiagonal || secondDiagonal;
+        }
+
+        public int ComputerMove()
+        {
+            int winningMove = WinningMove(compInput);
+            if (winningMove != 0)
+                return winningMove;
+            return 0;
+        }
+
+        public int WinningMove(char input)
+        {
+            for (int i = 1; i < board.Length; i++)
+            {
+                char[] boardCopy = getBoardCopy();
+                if (IfPositionFree(boardCopy, i))
+                {
+                    allotPosition(boardCopy, i, input);
+                    if (CheckIfPlayerHasWon(boardCopy, input))
+                        return i;
+                }
+            }
+            return 0;
         }
 
     }
