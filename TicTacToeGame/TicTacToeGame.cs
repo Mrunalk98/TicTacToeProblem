@@ -7,7 +7,7 @@ namespace TicTacToeGame
     public class TicTacToeGame
     {
         public char[] board = new char[10];
-        char playerInput = ' ';
+        char userInput = ' ';
         char compInput = ' ';
         public const int HEAD = 0;
         public const int TAIL= 1;
@@ -33,14 +33,14 @@ namespace TicTacToeGame
         public void ChooseInput()
         {
             Console.Write("Choose your input 'X' or 'O' : ");
-            while (playerInput != 'X' && playerInput != 'O')
+            while (userInput != 'X' && userInput != 'O')
             {
-                playerInput = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (playerInput != 'X' && playerInput != 'O')
+                userInput = Convert.ToChar(Console.ReadLine().ToUpper());
+                if (userInput != 'X' && userInput != 'O')
                     Console.Write("Please enter input 'X' or 'O' : ");
 
             }
-            if (playerInput == 'X')
+            if (userInput == 'X')
                 compInput = 'O';
             else
                 compInput = 'X';
@@ -60,8 +60,9 @@ namespace TicTacToeGame
                     Console.Write("Position " + userPositon + " is already occupied. Enter some other position : ");
                 }                    
             }
-            board[userPositon] = playerInput;
+            board[userPositon] = userInput;
             ShowBoard();
+            CheckIfPlayerHasWon(userInput);
         }
 
         public string CheckWhoPlaysFirst()
@@ -73,8 +74,19 @@ namespace TicTacToeGame
                 return "User";
             else
                 return "Computer";
+        }
 
-
+        public bool CheckIfPlayerHasWon(char input)
+        {
+            bool topRow = (board[1] == input && board[2] == input && board[3] == input);
+            bool middleRow = (board[4] == input && board[5] == input && board[6] == input);
+            bool bottomRow = (board[7] == input && board[8] == input && board[9] == input);
+            bool leftCol = (board[1] == input && board[4] == input && board[7] == input);
+            bool middleCol = (board[2] == input && board[5] == input && board[8] == input);
+            bool rightCol = (board[3] == input && board[6] == input && board[9] == input);
+            bool firstDiagonal = (board[1] == input && board[5] == input && board[9] == input);
+            bool secondDiagonal = (board[3] == input && board[5] == input && board[7] == input);
+            return topRow || middleRow || bottomRow || leftCol || rightCol || middleCol || firstDiagonal || secondDiagonal;
         }
 
     }
