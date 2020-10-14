@@ -13,15 +13,12 @@ namespace TicTacToeGame
         public const int TAIL= 1;
         public int[] corners = { 1, 3, 7, 9 };
         public int[] sides = { 2, 4, 6, 8 };
+        public string[] player = { "User", "Computer" };
 
         public void CreateGameBoard()
         {
             for (int i = 0; i < board.Length; i++)
                 board[i] = ' ';
-            board[1] = 'O';
-            board[3] = 'O';
-            board[7] = 'O';
-            board[9] = 'O';
         }
 
         public void ShowBoard()
@@ -31,6 +28,7 @@ namespace TicTacToeGame
             Console.WriteLine(" " + board[4] + " | " + board[5] + " | " + board[6]);
             Console.WriteLine("-----------");
             Console.WriteLine(" " + board[7] + " | " + board[8] + " | " + board[9]);
+            Console.WriteLine();
         }
 
         public char[] getBoardCopy()
@@ -54,7 +52,7 @@ namespace TicTacToeGame
                 compInput = 'O';
             else
                 compInput = 'X';
-            Console.WriteLine("User : " + userInput + " Comp : " + compInput);
+            Console.WriteLine("User Input = " + userInput + ",\t Computer Input = " + compInput + "\n");
         }
 
         private bool IfPositionFree(char[] b, int position)
@@ -72,22 +70,22 @@ namespace TicTacToeGame
             b[position] = playerInput;
         }
 
-        public void ChoosePositionOnBoard()
+        public bool ChoosePositionOnBoard()
         {
             int userPositon = 0;
-            Console.Write("Choose the location on board from position 1 to 9 : ");
+            Console.Write("Choose your position on board between 1 and 9 : ");
             while (userPositon < 1 || userPositon > 10 || board[userPositon] != ' ')
             {
                 userPositon = Convert.ToInt32(Console.ReadLine());
                 if (userPositon < 1 || userPositon > 10)
-                    Console.Write("Please enter a position from 1 to 9: ");
+                    Console.Write("Please enter a position between 1 and 9: ");
                 else if (!IfPositionFree(board, userPositon))
                 {
                     Console.Write("Position " + userPositon + " is already occupied. Enter some other position : ");
                 }
             }
             allotPosition(board, userPositon, userInput);
-            CheckIfPlayerHasWon(board, userInput);
+            return CheckIfPlayerHasWon(board, userInput);
         }
 
         public string CheckWhoPlaysFirst()
@@ -96,9 +94,9 @@ namespace TicTacToeGame
             int choice = random.Next(0, 2);
 
             if (choice == HEAD)
-                return "User";
+                return player[0];
             else
-                return "Computer";
+                return player[1];
         }
 
         public bool CheckIfPlayerHasWon(char [] b,  char input)
@@ -116,6 +114,7 @@ namespace TicTacToeGame
 
         public int ComputerMove()
         {
+            Console.WriteLine("Computer's Move : ");
             int compWinningMove = WinningMove(compInput);
             if (compWinningMove != 0)
             {
@@ -137,6 +136,7 @@ namespace TicTacToeGame
             int sidesMove = RandomMove(sides, compInput);
             if (sidesMove != 0)
                 return sidesMove;
+            CheckIfPlayerHasWon(board, compInput);
             return 0;
         }
 
@@ -176,6 +176,55 @@ namespace TicTacToeGame
                 return 5;
             }
             return 0;
+        }
+
+        private bool isBoardFull()
+        {
+            for (int i = 1; i < board.Length; i++)
+            {
+                if (IfPositionFree(board, i))
+                    return false;
+            }
+            Console.WriteLine("Game is Tie");
+            return true;
+        }
+        public void PlayTillGameOver(string firstMove)
+        {
+            bool gameEnd = false;
+            bool result = false;
+            string playerWon = "";
+            int index = -1;
+
+            if (firstMove == player[0])
+                index = 0;
+            else
+                index = 1;
+
+            while(!gameEnd && !isBoardFull())
+            {
+                for (int  i = 0; i < player.Length; i++)
+                {
+                    if (index == 0 || i == 1)
+                    {
+                        ComputerMove();
+                        result = CheckIfPlayerHasWon(board, compInput);
+                        playerWon = player[1];
+                        i++;
+                        index = 1;
+                    }
+                    else
+                    {
+                        result = ChoosePositionOnBoard();
+                        playerWon = player[0];
+                    }
+                    ShowBoard();
+                }
+                if (result)
+                {
+                    gameEnd = true;
+                    Console.WriteLine(playerWon + " has won the game !");
+                }
+            }
         }
 
     }
