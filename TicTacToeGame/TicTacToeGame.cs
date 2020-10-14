@@ -40,14 +40,16 @@ namespace TicTacToeGame
 
         public void ChooseInput()
         {
+            char user = ' ';
             Console.Write("Choose your input 'X' or 'O' : ");
-            while (userInput != 'X' && userInput != 'O')
+            while (user != 'X' && user != 'O')
             {
-                userInput = Convert.ToChar(Console.ReadLine().ToUpper());
-                if (userInput != 'X' && userInput != 'O')
+                user = Convert.ToChar(Console.ReadLine().ToUpper());
+                if (user != 'X' && user != 'O')
                     Console.Write("Please enter input 'X' or 'O' : ");
 
             }
+            userInput = user;
             if (userInput == 'X')
                 compInput = 'O';
             else
